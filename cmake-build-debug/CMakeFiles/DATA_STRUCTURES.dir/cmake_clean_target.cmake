@@ -1,3 +1,0 @@
-file(REMOVE_RECURSE
-  "libDATA_STRUCTURES.a"
-)
