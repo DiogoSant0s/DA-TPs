@@ -1,12 +1,32 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
-
 #include "TestAux.h"
 
 std::vector<int> IntroGraph::bfs(const int & source) const {
     std::vector<int> res;
-    // TODO
+    auto s = findVertex(source);
+    if (s == nullptr) {
+        return res;
+    }
+    for (auto v : vertexSet) {
+        v -> setVisited(false);
+    }
+    std::queue<Vertex*> q;
+    q.push(s);
+    s->setVisited(true);
+    while (!q.empty()) {
+        auto v = q.front();
+        q.pop();
+        res.push_back(v -> getId());
+        for (auto & e : v -> getAdj()) {
+            auto w = e -> getDest();
+            if ( ! w -> isVisited()) {
+                q.push(w);
+                w -> setVisited(true);
+            }
+        }
+    }
     return res;
 }
 

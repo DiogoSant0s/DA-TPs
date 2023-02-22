@@ -1,10 +1,9 @@
 #include "TestAux.h"
 
 void createNetwork(IntroGraph &graph) {
-    for(unsigned int i = 1; i <= 7; i++) {
+    for (int i = 1; i <= 7; i++) {
         graph.addVertex(i);
     }
-
     graph.addEdge(1,2,0);
     graph.addEdge(1,3,0);
     graph.addEdge(1,4,0);

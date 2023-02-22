@@ -6,8 +6,26 @@
 
 std::vector<int> IntroGraph::dfs(const int & source) const {
     std::vector<int> res;
-    // TODO
+    auto s = findVertex(source);
+    if (s == nullptr) {
+        return res;
+    }
+    for (auto v : vertexSet) {
+        v -> setVisited(false);
+    }
+    dfsVisit(s, res);
     return res;
+}
+
+void IntroGraph::dfsVisit(Vertex *v, std::vector<int> & res) const {
+    v -> setVisited(true);
+    res.push_back(v -> getId());
+    for (auto & e : v -> getAdj()) {
+        auto w = e -> getDest();
+        if (!w -> isVisited()) {
+            dfsVisit(w, res);
+        }
+    }
 }
 
 /// TESTS ///

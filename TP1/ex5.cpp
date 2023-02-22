@@ -3,8 +3,36 @@
 #include "exercises.h"
 
 bool IntroGraph::isDAG() const {
-    // TODO
-    return false;
+    for (auto v : vertexSet) {
+        v -> setVisited(false);
+        v -> setProcesssing(false);
+    }
+    for (auto v : vertexSet) {
+        if (!v -> isVisited()) {
+            if (!dfsIsDAG(v)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool IntroGraph::dfsIsDAG(Vertex *v) const {
+    v -> setVisited(true);
+    v -> setProcesssing(true);
+    for (auto e : v -> getAdj()) {
+        auto w = e -> getDest();
+        if (w -> isProcessing()) {
+            return false;
+        }
+        if (!w -> isVisited()) {
+            if (!dfsIsDAG(w)) {
+                return false;
+            }
+        }
+    }
+    v -> setProcesssing(false);
+    return true;
 }
 
 /// TESTS ///
@@ -13,7 +41,7 @@ bool IntroGraph::isDAG() const {
 TEST(TP1_Ex5, test_isDAG) {
     IntroGraph myGraph;
 
-    for(unsigned int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
         myGraph.addVertex(i);
     }
 

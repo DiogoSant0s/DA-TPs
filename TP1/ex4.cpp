@@ -4,22 +4,45 @@
 
 std::vector<int> IntroGraph::topsort() const {
     std::vector<int> res;
-    // TODO
+    std::queue<Vertex*> q;
+    int visited = 0;
+    for (auto v : vertexSet) {
+        v -> setIndegree(v -> getIncoming().size());
+        if (v -> getIndegree() == 0) {
+            q.push(v);
+        }
+    }
+    while (!q.empty()) {
+        visited++;
+        Vertex* v = q.front();
+        q.pop();
+        res.push_back(v -> getId());
+        for (auto e : v -> getAdj()) {
+            Vertex *w = e -> getDest();
+            w -> setIndegree(w -> getIndegree() - 1);
+            if (w -> getIndegree() == 0) {
+                q.push(w);
+            }
+        }
+    }
+    if (visited != vertexSet.size()) {
+        return {};
+    }
     return res;
 }
 
 /// TESTS ///
 #include <gtest/gtest.h>
 
-void expectTopSort(const IntroGraph graph, std::vector<int> topOrder){
-    for(auto u: graph.getVertexSet()) {
-        auto itrU = std::find(topOrder.begin(), topOrder.end(), u->getId());
+void expectTopSort(const IntroGraph& graph, std::vector<int> topOrder){
+    for (auto u: graph.getVertexSet()) {
+        auto itrU = std::find(topOrder.begin(), topOrder.end(), u -> getId());
         unsigned int indexU = std::distance(topOrder.begin(), itrU);
-        for(auto edge: u->getAdj()) {
+        for (auto edge: u -> getAdj()) {
             auto v = edge->getDest();
-            auto itrV = std::find(topOrder.begin(), topOrder.end(), v->getId());
+            auto itrV = std::find(topOrder.begin(), topOrder.end(), v -> getId());
             unsigned int indexV = std::distance(topOrder.begin(), itrV);
-            EXPECT_LT(indexU,indexV);
+            EXPECT_LT(indexU, indexV);
         }
     }
 }
