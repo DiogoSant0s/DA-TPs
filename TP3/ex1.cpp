@@ -3,22 +3,20 @@
 #include "exercises.h"
 
 bool changeMakingGR(const unsigned int C[], unsigned int Stock[], unsigned int n, unsigned int T, unsigned int usedCoins[]) {
-    for (unsigned int i = 0; i < n; i++) {
-        usedCoins[i] = 0;
-    }
+    for (unsigned i = 0; i < n; i++) usedCoins[i] = 0;
     unsigned int used = 0;
     while (used < T) {
-        unsigned int tmp = used;
-        for (unsigned int i = n - 1; true; i--) {
+        unsigned int temp = used;
+        for (int i = (int) n - 1; i >= 0; i--) {
             if (Stock[i] == 0) continue;
             if (C[i] + used <= T) {
                 used += C[i];
                 Stock[i]--;
                 usedCoins[i]++;
             }
-            if (tmp != used) break;
+            if (temp != used) break;
         }
-        if (tmp == used) return false;
+        if (temp == used) return false;
     }
     return true;
 }

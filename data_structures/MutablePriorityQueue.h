@@ -11,8 +11,6 @@
 
 #include <vector>
 
-
-
 /**
  * class T must have: (i) accessible field int queueIndex; (ii) operator< defined.
  */
@@ -52,20 +50,22 @@ T* MutablePriorityQueue<T>::extractMin() {
 	auto x = H[1];
 	H[1] = H.back();
 	H.pop_back();
-	if(H.size() > 1) heapifyDown(1);
-	x->queueIndex = 0;
+	if (H.size() > 1) {
+        heapifyDown(1);
+    }
+	x -> queueIndex = 0;
 	return x;
 }
 
 template <class T>
 void MutablePriorityQueue<T>::insert(T *x) {
 	H.push_back(x);
-	heapifyUp(H.size()-1);
+	heapifyUp(H.size() - 1);
 }
 
 template <class T>
 void MutablePriorityQueue<T>::decreaseKey(T *x) {
-	heapifyUp(x->queueIndex);
+	heapifyUp(x -> queueIndex);
 }
 
 template <class T>
@@ -85,9 +85,9 @@ void MutablePriorityQueue<T>::heapifyDown(unsigned i) {
 		unsigned k = leftChild(i);
 		if (k >= H.size())
 			break;
-		if (k+1 < H.size() && *H[k+1] < *H[k])
+		if (k + 1 < H.size() && *H[k + 1] < *H[k])
 			++k; // right child of i
-		if ( ! (*H[k] < *x) )
+		if (*H[k] >= *x)
 			break;
 		set(i, H[k]);
 		i = k;
@@ -98,7 +98,7 @@ void MutablePriorityQueue<T>::heapifyDown(unsigned i) {
 template <class T>
 void MutablePriorityQueue<T>::set(unsigned i, T * x) {
 	H[i] = x;
-	x->queueIndex = i;
+	x -> queueIndex = i;
 }
 
 #endif /* DA_TP_CLASSES_MUTABLEPRIORITYQUEUE */

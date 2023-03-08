@@ -31,6 +31,6 @@ std::vector<Activity> activitySelectionGR(std::vector<Activity> A) {
 TEST(TP3_Ex2, activityScheduling) {
     std::vector<Activity> A = {{10,20}, {30, 35}, {5, 15}, {10, 40}, {40, 50}};
     std::vector<Activity> V = activitySelectionGR(A);
-    EXPECT_EQ(V.size(), 3 );
+    EXPECT_EQ(V.size(), 3);
     EXPECT_THAT(V, ::testing::UnorderedElementsAre(Activity(5, 15), Activity(30, 35), Activity(40, 50)));
 }

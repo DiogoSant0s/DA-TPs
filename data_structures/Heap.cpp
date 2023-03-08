@@ -16,13 +16,11 @@ Heap::Heap() {
 Heap::Heap(std::vector<int> v): Heap() {
     // Add the elements to the vector without respecting the heap property
     elems.insert(elems.end(),v.begin(),v.end());
-
     // Index of the last non-leaf node of vector v
     unsigned int startIdx = v.size() / 2;
-
     // Move the elements around so that the heap property is respected
     // There is no need to heapify the elements with higher indices since they are leaf nodes
-    for(unsigned int i = startIdx; i > 0; i--) {
+    for (unsigned int i = startIdx; i > 0; i--) {
         heapifyDown(i);
     }
 }
@@ -35,13 +33,15 @@ int Heap::extractMin() {
 	auto x = elems[1];
     elems[1] = elems.back();
     elems.pop_back();
-	if(elems.size() > 1) heapifyDown(1);
+	if (elems.size() > 1) {
+        heapifyDown(1);
+    }
 	return x;
 }
 
 void Heap::insert(int x) {
 	elems.push_back(x);
-	heapifyUp(elems.size()-1);
+	heapifyUp(elems.size() - 1);
 }
 
 void Heap::heapifyUp(unsigned int i) {
@@ -59,9 +59,9 @@ void Heap::heapifyDown(unsigned int i) {
 		unsigned k = leftChild(i);
 		if (k >= elems.size())
 			break;
-		if (k+1 < elems.size() && elems[k+1] < elems[k])
+		if (k + 1 < elems.size() && elems[k + 1] < elems[k])
 			++k; // right child of i
-		if ( ! (elems[k] < x) )
+		if (elems[k] >= x)
 			break;
         elems[i] = elems[k];
 		i = k;

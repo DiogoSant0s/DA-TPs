@@ -1,12 +1,9 @@
 #include "ClosestPointPair.h"
-
 #include <limits>
-
 #include <iostream>
 #include <fstream>
 #include <sys/timeb.h>
 #include <random>
-#include <cstdlib>
 #include "gtest/gtest.h"
 
 const double MAX_DOUBLE = std::numeric_limits<double>::max();
@@ -46,7 +43,7 @@ Result::Result(): Result(MAX_DOUBLE, Point(0,0), Point(0,0)) {
 
 //// For tests
 
-void readPoints(std::string in, std::vector<Point> &vp) {
+void readPoints(const std::string& in, std::vector<Point> &vp) {
     std::ifstream is(REL_PATH + in);
     vp.clear();
     if (!is) {
@@ -93,13 +90,13 @@ void generateRandom(int n, std::vector<Point> &vp) {
     vp.clear();
     // reference value for reference points (r, r), (r, r+1)
     int r = dis(gen);
-    vp.push_back(Point(r,r));
-    vp.push_back(Point(r,r+1));
+    vp.emplace_back(r,r);
+    vp.emplace_back(r,r+1);
     for (int i = 2; i < n; i++)
         if (i < r)
-            vp.push_back(Point(i, i));
+            vp.emplace_back(i, i);
         else
-            vp.push_back(Point(i+1, i+2));
+            vp.emplace_back(i+1, i+2);
     shuffleY(vp, 2, n-1);
     shuffle(vp, 0, n-1);
 }
@@ -114,7 +111,7 @@ void generateRandomConstX(int n, std::vector<Point> &vp) {
     int r = dis(gen);
     int y = 0;
     for (int i = 0; i < n; i++) {
-        vp.push_back(Point(0, y));
+        vp.emplace_back(0, y);
         if (i == r)
             y++;
         else
@@ -131,10 +128,10 @@ void generateRandomConstX(int n, std::vector<Point> &vp) {
  * Use GetMilliSpan to correct for rollover
  */
 int GetMilliCount() {
-    timeb tb;
+    timeb tb{};
     ftime( &tb );
-    int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
-    return nCount;
+    long long nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
+    return (int) nCount;
 }
 
 int GetMilliSpan(int nTimeStart) {
@@ -144,7 +141,7 @@ int GetMilliSpan(int nTimeStart) {
     return nSpan;
 }
 
-int testNP(std::string name, std::vector<Point> &points, double dmin, NP_FUNC func, std::string alg) {
+int testNP(const std::string& name, std::vector<Point> &points, double dmin, NP_FUNC func, const std::string& alg) {
     int nTimeStart = GetMilliCount();
     Result res = (func)(points);
     int nTimeElapsed = GetMilliSpan(nTimeStart);
@@ -160,19 +157,19 @@ int testNP(std::string name, std::vector<Point> &points, double dmin, NP_FUNC fu
  * and checks the expected result (res).
  * Prints result and performance information.
  */
-int testNPFile(std::string in, double dmin, NP_FUNC func, std::string alg) {
+int testNPFile(const std::string& in, double dmin, NP_FUNC func, const std::string& alg) {
     std::vector<Point> pontos;
     readPoints(in, pontos);
     return testNP(in, pontos, dmin, func, alg);
 }
 
-int testNPRand(int size, std::string name, double dmin, NP_FUNC func, std::string alg) {
+int testNPRand(int size, const std::string& name, double dmin, NP_FUNC func, const std::string& alg) {
     std::vector<Point> pontos;
     generateRandom(size, pontos);
     return testNP(name, pontos, dmin, func, alg);
 }
 
-int testNPRandConstX(int size, std::string name, double dmin, NP_FUNC func, std::string alg) {
+int testNPRandConstX(int size, const std::string& name, double dmin, NP_FUNC func, const std::string& alg) {
     std::vector<Point> pontos;
     generateRandomConstX(size, pontos);
     return testNP(name, pontos, dmin, func, alg);
@@ -182,17 +179,15 @@ int testNPRandConstX(int size, std::string name, double dmin, NP_FUNC func, std:
  * Runs the given algorithm for the existent data files.
  */
 
-void testNearestPoints(NP_FUNC func, std::string alg) {
+void testNearestPoints(NP_FUNC func, const std::string& alg) {
     std::cout << "algorithm; data set; time elapsed (ms); distance; point1; point2" << std::endl;
     int maxTime = 10000;
-    if ( testNPFile("Pontos8", 11841.3, func, alg) > maxTime)
+    if (testNPFile("Pontos8", 11841.3, func, alg) > maxTime)
         return;
-    if ( testNPFile("Pontos64", 556.066, func, alg) > maxTime)
+    if (testNPFile("Pontos64", 556.066, func, alg) > maxTime)
         return;
     if (testNPFile("Pontos1k", 100.603, func, alg) > maxTime)
         return;
-    /*
-    // Uncomment to use more tests
     if (testNPFile("Pontos16k", 13.0384, func, alg) > maxTime)
         return;
     if (testNPFile("Pontos32k", 1.0, func, alg) > maxTime)
@@ -205,9 +200,8 @@ void testNearestPoints(NP_FUNC func, std::string alg) {
         return;
     if (testNPRand(0x80000, "Pontos512k",  1.0, func, alg) > maxTime)
         return;
-    if ( testNPRand(0x100000, "Pontos1M",  1.0, func, alg) > maxTime)
+    if (testNPRand(0x100000, "Pontos1M",  1.0, func, alg) > maxTime)
         return;
-    if ( testNPRand(0x200000, "Pontos2M",  1.0, func, alg) > maxTime)
+    if (testNPRand(0x200000, "Pontos2M",  1.0, func, alg) > maxTime)
         return;
-    */
 }

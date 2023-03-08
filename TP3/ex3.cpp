@@ -4,8 +4,13 @@
 #include <algorithm>
 
 double minimumAverageCompletionTime(std::vector<unsigned int> tasks, std::vector<unsigned int> &orderedTasks) {
-    // TODO
-    return 0.0;
+    double min = 0;
+    std::sort(tasks.begin(), tasks.end());
+    orderedTasks = tasks;
+    for (int i = 0; i < tasks.size(); ++i) {
+        min += (double) (tasks.size() - i) * tasks.at(i);
+    }
+    return min / (double) tasks.size();
 }
 
 /// TESTS ///
@@ -18,5 +23,5 @@ TEST(TP3_Ex3, taskOrdering) {
     double averageTime = minimumAverageCompletionTime(tasks, orderedTasks);
     EXPECT_EQ(orderedTasks.size(), 4 );
     EXPECT_NEAR(averageTime, 17.75, 0.00001);
-    EXPECT_THAT(orderedTasks,  ::testing::ElementsAre(3, 8, 10, 15));
+    EXPECT_THAT(orderedTasks, ::testing::ElementsAre(3, 8, 10, 15));
 }

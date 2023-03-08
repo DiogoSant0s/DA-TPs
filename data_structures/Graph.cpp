@@ -3,7 +3,7 @@
 #include "Graph.h"
 
 int Graph::getNumVertex() const {
-    return vertexSet.size();
+    return (int) vertexSet.size();
 }
 
 std::vector<Vertex *> Graph::getVertexSet() const {
@@ -24,7 +24,7 @@ Vertex * Graph::findVertex(const int &id) const {
  * Finds the index of the vertex with a given content.
  */
 int Graph::findVertexIdx(const int &id) const {
-    for (unsigned i = 0; i < vertexSet.size(); i++)
+    for (int i = 0; i < vertexSet.size(); i++)
         if (vertexSet[i]->getId() == id)
             return i;
     return -1;
@@ -45,7 +45,7 @@ bool Graph::addVertex(const int &id) {
  * destination vertices and the edge weight (w).
  * Returns true if successful, and false if the source or destination vertex does not exist.
  */
-bool Graph::addEdge(const int &sourc, const int &dest, double w) {
+bool Graph::addEdge(const int &sourc, const int &dest, double w) const {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
     if (v1 == nullptr || v2 == nullptr)
@@ -54,7 +54,7 @@ bool Graph::addEdge(const int &sourc, const int &dest, double w) {
     return true;
 }
 
-bool Graph::addBidirectionalEdge(const int &sourc, const int &dest, double w) {
+bool Graph::addBidirectionalEdge(const int &sourc, const int &dest, double w) const {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
     if (v1 == nullptr || v2 == nullptr)
@@ -85,6 +85,6 @@ void deleteMatrix(double **m, int n) {
 }
 
 Graph::~Graph() {
-    deleteMatrix(distMatrix, vertexSet.size());
-    deleteMatrix(pathMatrix, vertexSet.size());
+    deleteMatrix(distMatrix, (int) vertexSet.size());
+    deleteMatrix(pathMatrix, (int) vertexSet.size());
 }

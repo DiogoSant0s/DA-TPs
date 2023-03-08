@@ -9,7 +9,7 @@
 class Heap {
 public:
     Heap();
-    Heap(std::vector<int> v);
+    explicit Heap(std::vector<int> v);
 	void insert(int x);
 	int extractMin();
 	bool empty();
