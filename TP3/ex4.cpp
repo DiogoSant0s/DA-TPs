@@ -1,7 +1,6 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
-
 #include <algorithm>
 
 double fractionalKnapsackGR(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int maxWeight, double usedItems[]) {

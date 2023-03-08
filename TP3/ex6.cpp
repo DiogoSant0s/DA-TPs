@@ -1,7 +1,6 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
-
 #include "MSTTestAux.h"
 #include "../data_structures/UFDS.h"
 
@@ -16,18 +15,17 @@ std::vector<Vertex *> GreedyGraph::kruskal() {
 
 TEST(TP3_Ex6, test_kruskal) {
     GreedyGraph graph = createMSTTestGraph();
-    std::vector<Vertex *> res = graph.kruskal();
+    std::vector<Vertex*> res = graph.kruskal();
 
     std::stringstream ss;
-    for(const auto v : res) {
-        ss << v->getId() << "<-";
-        if ( v->getPath() != nullptr ) {
-            ss << v->getPath()->getOrig()->getId();
+    for (const auto v : res) {
+        ss << v -> getId() << "<-";
+        if (v -> getPath() != nullptr) {
+            ss << v -> getPath() -> getOrig() -> getId();
         }
         ss << "|";
     }
     std::cout << ss.str() << std::endl;
-
     EXPECT_TRUE(isSpanningTree(res));
     EXPECT_EQ(spanningTreeCost(res), 11);
 }
