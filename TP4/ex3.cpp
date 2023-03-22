@@ -9,6 +9,7 @@ std::string hanoiDC(unsigned int n, char src, char dest) {
 
 /// TESTS ///
 #include <gtest/gtest.h>
+#include <algorithm>
 
 TEST(TP4_Ex3, testHanoi_height4) {
     std::string moves = hanoiDC(4, 'A', 'B');

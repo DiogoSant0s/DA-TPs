@@ -9,6 +9,7 @@ double bisection(double x1, double x2, double err, double(*f)(double)) {
 
 /// TESTS ///
 #include <gtest/gtest.h>
+#include <valarray>
 
 TEST(TP4_Ex5, testBisection) {
     ASSERT_NEAR(bisection(-2, 2, 0.0001, [](double x){return x;}), 0.0, 0.00001);

@@ -14,7 +14,7 @@ std::vector<int> mysteryFunc(const std::vector<int> &A) {
 TEST(TP4_Ex2, testMysteryFunc) {
     auto A = mysteryFunc({1, 2, 3, 4});
     EXPECT_EQ(A.size(), 4);
-    if(A.size() == 4) {
+    if (A.size() == 4) {
         EXPECT_EQ(A[0], 1);
         EXPECT_EQ(A[1], 2);
         EXPECT_EQ(A[2], 3);
@@ -23,7 +23,7 @@ TEST(TP4_Ex2, testMysteryFunc) {
 
     A = mysteryFunc({2, -1, -3, 4});
     EXPECT_EQ(A.size(), 4);
-    if(A.size() == 4) {
+    if (A.size() == 4) {
         EXPECT_EQ(A[0], -3);
         EXPECT_EQ(A[1], -1);
         EXPECT_EQ(A[2], 2);
@@ -32,7 +32,7 @@ TEST(TP4_Ex2, testMysteryFunc) {
 
     A = mysteryFunc({2, -1, 3, 4});
     EXPECT_EQ(A.size(), 4);
-    if(A.size() == 4) {
+    if (A.size() == 4) {
         EXPECT_EQ(A[0], -1);
         EXPECT_EQ(A[1], 2);
         EXPECT_EQ(A[2], 3);
@@ -41,7 +41,7 @@ TEST(TP4_Ex2, testMysteryFunc) {
 
     A = mysteryFunc({-2, 1, -3, 4, -1, 2, 1, -5, 4});
     EXPECT_EQ(A.size(), 9);
-    if(A.size() == 9) {
+    if (A.size() == 9) {
         EXPECT_EQ(A[0], -5);
         EXPECT_EQ(A[1], -3);
         EXPECT_EQ(A[2], -2);
