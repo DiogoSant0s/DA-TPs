@@ -4,8 +4,28 @@
 #include "MSTTestAux.h"
 #include "../data_structures/UFDS.h"
 
-std::vector<Vertex *> GreedyGraph::kruskal() {
-    // TODO
+std::vector<Vertex*> GreedyGraph::kruskal() {
+    if (vertexSet.empty()) {
+        return this -> vertexSet;
+    }
+    UFDS ufds(vertexSet.size());
+    std::vector<Edge*> allEdges;
+    for (auto v: vertexSet) {
+        for (auto e: v -> getAdj()) {
+            if (!e -> isSelected()) {
+                allEdges.push_back(e);
+                e -> setSelected(true);
+                e -> getReverse() -> setSelected(true);
+            }
+        }
+    }
+    sort(allEdges.begin(), allEdges.end(), [](Edge *a, Edge *b) {return a -> getWeight() < b -> getWeight();});
+    for (auto e: allEdges) {
+        if (!ufds.isSameSet(e -> getDest() -> getId(), e -> getOrig() -> getId())) {
+            e -> getDest() -> setPath(e);
+            ufds.linkSets(e -> getDest() -> getId(), e -> getOrig() -> getId());
+        }
+    }
     return vertexSet;
 }
 

@@ -3,9 +3,35 @@
 #include "exercises.h"
 #include <algorithm>
 
-double fractionalKnapsackGR(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int maxWeight, double usedItems[]) {
-    // TODO
-    return 0.0;
+double fractionalKnapsackGR(const unsigned int values[], const unsigned int weights[], unsigned int n, unsigned int maxWeight, double usedItems[]) {
+    // Step 1: Sort items by decreasing value/weight ratio
+    std::vector<unsigned int> sortedIndices;
+    for (unsigned int i = 0; i < n; i++) {
+        usedItems[i] = 0.0;
+        sortedIndices.push_back(i);
+    }
+    std::sort(sortedIndices.begin(), sortedIndices.end(),  [values, weights](unsigned int i, unsigned int j) {
+        return static_cast<double>(values[i]) / weights[i] > static_cast<double>(values[j]) / weights[j];
+    });
+    // Step 2: Process the items
+    double totalValue = 0.0;
+    unsigned int remainingWeight = maxWeight;
+    for (unsigned int i = 0; i < n; i++) {
+        if (remainingWeight == 0) break; // stop earlier because the knapsack is full
+        if (remainingWeight >= weights[sortedIndices[i]]) {
+            // Fully add the next item
+            usedItems[sortedIndices[i]] = 1.0;
+            totalValue += static_cast<double>(values[sortedIndices[i]]);
+            remainingWeight -= weights[sortedIndices[i]];
+        }
+        else {
+            // Partially add the item to completely fill the knapsack
+            usedItems[sortedIndices[i]] = static_cast<double>(remainingWeight) / weights[sortedIndices[i]];
+            totalValue += usedItems[sortedIndices[i]] * values[sortedIndices[i]];
+            break;
+        }
+    }
+    return totalValue;
 }
 
 /// TESTS ///

@@ -21,7 +21,7 @@ std::vector<Activity> activitySelectionGR(std::vector<Activity> A);
 // Ex 3
 double minimumAverageCompletionTime(std::vector<unsigned int> tasks, std::vector<unsigned int> &orderedTasks);
 // Ex 4
-double fractionalKnapsackGR(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int maxWeight, double usedItems[]);
+double fractionalKnapsackGR(const unsigned int values[], const unsigned int weights[], unsigned int n, unsigned int maxWeight, double usedItems[]);
 
 #include "../data_structures/Graph.h"
 
@@ -35,6 +35,15 @@ public:
     void edmondsKarp(int source, int target);
 protected:
     // TODO: Add auxiliary methods if needed
+    void dfsKruskalPath(Vertex *v);
+
+    static void testAndVisit(std::queue<Vertex *> &q, Edge *e, Vertex *w, double residual);
+
+    bool findAugmentingPath(Vertex *s, Vertex *t);
+
+    static double findMinResidualAlongPath(Vertex *s, Vertex *t);
+
+    static void augmentFlowAlongPath(Vertex *s, Vertex *t, double f);
 };
 
 #endif //DA_TP3_CLASSES_EXERCISES_H

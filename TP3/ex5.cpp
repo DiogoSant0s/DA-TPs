@@ -4,7 +4,28 @@
 #include "MSTTestAux.h"
 
 std::vector<Vertex*> GreedyGraph::prim() {
-    // TODO
+    MutablePriorityQueue<Vertex> q;
+    for (auto v : vertexSet) {
+        v -> setDist(INF);
+        v -> setVisited(false);
+        q.insert(v);
+    }
+    vertexSet[0] -> setDist(0);
+    vertexSet[0] -> setPath(nullptr);
+    vertexSet[0] -> setVisited(true);
+    q.decreaseKey(vertexSet[0]);
+    while (!q.empty()) {
+        Vertex* v = q.extractMin();
+        for (Edge* e : v -> getAdj()) {
+            Vertex* w = e -> getDest();
+            if (!w -> isVisited() && e -> getWeight() < w -> getDist()) {
+                w -> setPath(e);
+                w -> setDist(e -> getWeight());
+                q.decreaseKey(w);
+            }
+        }
+        v -> setVisited(true);
+    }
     return this -> vertexSet;
 }
 
