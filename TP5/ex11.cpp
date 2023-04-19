@@ -1,7 +1,6 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
-
 #include "TestAux.h"
 
 void DPGraph::bellmanFord(const int &origin) {

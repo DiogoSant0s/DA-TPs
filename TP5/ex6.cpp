@@ -47,53 +47,53 @@ TEST(TP5_Ex6, testMaxSubsequence) {
     EXPECT_EQ(j, 6);
 
     // Uncomment the next line to perform the execution time tests
-    // testPerformanceMaxSubsequence();
+    testPerformanceMaxSubsequence();
 }
 
 #include <iostream>
 #include <chrono>
 
 void testPerformanceMaxSubsequence() {
-    srand(time(NULL)); //generates random seed
+    srand(time(nullptr)); //generates random seed
     const unsigned long N_ITERATIONS = 5;
     const unsigned long MIN_SIZE = 0;
     const unsigned long MAX_SIZE = 10000;
     const unsigned long STEP_SIZE = 500;
     int seq[MAX_SIZE];
 
-    std::cout << "n; DP time (s); BF time (s); DC time (s)" << std::endl;
-    for(unsigned long size = MIN_SIZE; size <= MAX_SIZE; size += STEP_SIZE) {
-        auto elapsedDP = std::chrono::duration<double>::zero();
-        auto elapsedBF = std::chrono::duration<double>::zero();
-        auto elapsedDC = std::chrono::duration<double>::zero();
-        for(unsigned long k = 0; k < N_ITERATIONS; k++) {
-            for(unsigned long i = 0; i < size; i++) {
-                seq[i] = rand() % (10 * size) - (5 * size);
+    cout << "n; DP time (s); BF time (s); DC time (s)" << endl;
+    for (unsigned long size = MIN_SIZE; size <= MAX_SIZE; size += STEP_SIZE) {
+        auto elapsedDP = chrono::duration<double>::zero();
+        auto elapsedBF = chrono::duration<double>::zero();
+        auto elapsedDC = chrono::duration<double>::zero();
+        for (unsigned long q = 0; q < N_ITERATIONS; q++) {
+            for (unsigned long i = 0; i < size; i++) {
+                seq[i] = (int) rand() % (10 * size) - (5 * size);
             }
 
             unsigned int i, j;
-            auto start = std::chrono::high_resolution_clock::now();
-            for(unsigned int k = 0; k < N_ITERATIONS; k++) {
+            auto start = chrono::high_resolution_clock::now();
+            for (unsigned int k = 0; k < N_ITERATIONS; k++) {
                 maxSubsequenceDP(seq, size, i, j);
             }
-            auto finish = std::chrono::high_resolution_clock::now();
+            auto finish = chrono::high_resolution_clock::now();
             elapsedDP += finish - start;
 
-            start = std::chrono::high_resolution_clock::now();
-            for(unsigned int k = 0; k < N_ITERATIONS; k++) {
+            start = chrono::high_resolution_clock::now();
+            for (unsigned int k = 0; k < N_ITERATIONS; k++) {
                 maxSubsequenceBF(seq, size, i, j);
             }
-            finish = std::chrono::high_resolution_clock::now();
+            finish = chrono::high_resolution_clock::now();
             elapsedBF += finish - start;
 
             int i2, j2;
-            start = std::chrono::high_resolution_clock::now();
-            for(unsigned int k = 0; k < N_ITERATIONS; k++) {
+            start = chrono::high_resolution_clock::now();
+            for (unsigned int k = 0; k < N_ITERATIONS; k++) {
                 maxSubsequenceDC(seq, size, i2, j2);
             }
-            finish = std::chrono::high_resolution_clock::now();
+            finish = chrono::high_resolution_clock::now();
             elapsedDC += finish - start;
         }
-        std::cout << size << ";" << (elapsedDP.count() / N_ITERATIONS) << ";" << (elapsedBF.count() / N_ITERATIONS) << ";" << (elapsedDC.count() / N_ITERATIONS) << std::endl;
+        cout << size << ";" << (elapsedDP.count() / N_ITERATIONS) << ";" << (elapsedBF.count() / N_ITERATIONS) << ";" << (elapsedDC.count() / N_ITERATIONS) << endl;
     }
 }

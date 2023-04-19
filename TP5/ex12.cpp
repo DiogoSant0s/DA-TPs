@@ -1,15 +1,14 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
-
 #include "TestAux.h"
 
 void DPGraph::floydWarshall() {
     // TODO
 }
 
-std::vector<int> DPGraph::getFloydWarshallPath(const int &origin, const int &dest) const{
-    std::vector<int> res;
+vector<int> DPGraph::getFloydWarshallPath(const int &origin, const int &dest) const{
+    vector<int> res;
     // TODO
     return res;
 }

@@ -7,7 +7,7 @@
 DPGraph CreateTestGraph() {
     DPGraph myGraph;
 
-    for(int i = 1; i <= 7; i++)
+    for (int i = 1; i <= 7; i++)
         myGraph.addVertex(i);
 
     myGraph.addEdge(1, 2, 2);
@@ -30,7 +30,7 @@ DPGraph CreateTestGraph() {
 DPGraph CreateTestGraph2() {
     DPGraph myGraph;
 
-    for(int i = 1; i <= 4; i++)
+    for (int i = 1; i <= 4; i++)
         myGraph.addVertex(i);
 
     myGraph.addEdge(1, 1, 0);
@@ -57,10 +57,10 @@ DPGraph CreateTestGraph2() {
 }
 
 
-void generateRandomGridGraph(int n, DPGraph & g) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(1, n);
+void generateRandomGridGraph(int n, DPGraph& g) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dis(1, n);
 
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
@@ -70,27 +70,27 @@ void generateRandomGridGraph(int n, DPGraph & g) {
         for (int j = 0; j < n; j++)
             for (int di = -1; di <= 1; di++)
                 for (int dj = -1; dj <= 1; dj++)
-                    if ((di != 0) != (dj != 0) && i+di >= 0 && i+di < n && j+dj >= 0 && j+dj < n)
-                        g.addEdge(i*n + j, (i+di)*n + (j+dj), dis(gen));
+                    if ((di != 0) != (dj != 0) && i + di >= 0 && i + di < n && j + dj >= 0 && j + dj < n)
+                        g.addEdge(i * n + j, (i + di) * n + (j + dj), dis(gen));
 }
 
-void checkAllPaths(DPGraph &g, std::string expected) {
-    std::stringstream ss;
-    std::vector<Vertex *> vs = g.getVertexSet();
-    for(unsigned int i = 0; i < vs.size(); i++) {
-        ss << vs[i]->getId() << "<-";
-        if ( vs[i]->getPath() != nullptr ) {
-            ss << vs[i]->getPath()->getOrig()->getId();
+void checkAllPaths(DPGraph& g, const string& expected) {
+    stringstream ss;
+    vector<Vertex*> vs = g.getVertexSet();
+    for (auto& v : vs) {
+        ss << v->getId() << "<-";
+        if (v->getPath() != nullptr) {
+            ss << v->getPath()->getOrig()->getId();
         }
         ss << "|";
     }
     EXPECT_EQ(expected, ss.str());
 }
 
-void checkSinglePath(std::vector<int> path, std::string expected) {
-    std::stringstream ss;
-    for(unsigned int i = 0; i < path.size(); i++) {
-        ss << path[i] << " ";
+void checkSinglePath(const vector<int>& path, const string& expected) {
+    stringstream ss;
+    for (int i : path) {
+        ss << i << " ";
     }
     EXPECT_EQ(expected, ss.str());
 }
