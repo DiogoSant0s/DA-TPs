@@ -4,8 +4,26 @@
 #include <algorithm> // std::next_permutation
 
 unsigned int tspBF(const unsigned int **dists, unsigned int n, unsigned int path[]) {
-    // TODO
-    return 0;
+    unsigned int curCandidate[20];
+    for (unsigned int i = 0; i < n; i++) {
+        curCandidate[i] = i;
+    }
+    bool foundSol = false;
+    unsigned int minDist;
+    do {
+        unsigned int dist = dists[curCandidate[n - 1]][curCandidate[0]];
+        for (unsigned int i = 0; i < n - 1; i++) {
+            dist += dists[curCandidate[i]][curCandidate[i + 1]];
+        }
+        if (!foundSol || dist < minDist) {
+            foundSol = true;
+            minDist = dist;
+            for (unsigned int i = 0; i < n; i++) {
+                path[i] = curCandidate[i];
+            }
+        }
+    } while (next_permutation(curCandidate + 1,curCandidate+n));
+    return minDist;
 }
 
 /// TESTS ///

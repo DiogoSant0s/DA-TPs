@@ -2,9 +2,45 @@
 
 #include "exercises.h"
 
-bool changeMakingBF(unsigned int C[], unsigned int Stock[], unsigned int n, unsigned int T, unsigned int usedCoins[]) {
-    // TODO
-    return false;
+bool changeMakingBF(const unsigned int C[], const unsigned int Stock[], unsigned int n, unsigned int T, unsigned int usedCoins[]) {
+    unsigned int curCandidate[20];
+    for (unsigned int i = 0; i < n; i++) {
+        curCandidate[i] = 0;
+    }
+    bool foundSol = false;
+    unsigned int minCoins;
+    while (true) {
+        unsigned int totalValue = 0;
+        unsigned int totalCoins = 0;
+        for (unsigned int k = 0; k < n; k++) {
+            totalValue += C[k]*curCandidate[k];
+            totalCoins += curCandidate[k];
+        }
+        if (totalValue == T) {
+            if (!foundSol || totalCoins < minCoins) {
+                foundSol = true;
+                minCoins = totalCoins;
+                for (unsigned int k = 0; k < n; k++) {
+                    usedCoins[k] = curCandidate[k];
+                }
+            }
+        }
+        unsigned int curIndex = 0;
+        while (curCandidate[curIndex] == Stock[curIndex]) {
+            curIndex++;
+            if (curIndex == n) {
+                break;
+            }
+        }
+        if (curIndex == n) {
+            break;
+        }
+        for (unsigned int i = 0; i < curIndex; i++) {
+            curCandidate[i] = 0;
+        }
+        curCandidate[curIndex]++;
+    }
+    return foundSol;
 }
 
 /// TESTS ///

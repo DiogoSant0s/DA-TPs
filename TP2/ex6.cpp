@@ -2,9 +2,45 @@
 
 #include "exercises.h"
 
-unsigned int knapsackBF(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int maxWeight, bool usedItems[]) {
-    // TODO
-    return 0;
+unsigned int knapsackBF(const unsigned int values[], const unsigned int weights[], unsigned int n, unsigned int maxWeight, bool usedItems[]) {
+    bool curCandidate[20];
+    for (unsigned int i = 0; i < n; i++) {
+        curCandidate[i] = false;
+    }
+    bool foundSol = false;
+    unsigned int maxValue;
+    while (true) {
+        unsigned int totalValue = 0;
+        unsigned int totalWeight = 0;
+        for (unsigned int k = 0; k < n; k++) {
+            totalValue += values[k] * curCandidate[k];
+            totalWeight += weights[k] * curCandidate[k];
+        }
+        if (totalWeight <= maxWeight) {
+            if (!foundSol || totalValue > maxValue) {
+                foundSol = true;
+                maxValue = totalValue;
+                for (unsigned int k = 0; k < n; k++) {
+                    usedItems[k] = curCandidate[k];
+                }
+            }
+        }
+        unsigned int curIndex = 0;
+        while (curCandidate[curIndex]) {
+            curIndex++;
+            if (curIndex == n) {
+                break;
+            }
+        }
+        if (curIndex == n) {
+            break;
+        }
+        for (unsigned int i = 0; i < curIndex; i++) {
+            curCandidate[i] = false;
+        }
+        curCandidate[curIndex] = true;
+    }
+    return maxValue;
 }
 
 /// TESTS ///

@@ -14,14 +14,14 @@ std::vector<int> IntroGraph::bfs(const int & source) const {
     }
     std::queue<Vertex*> q;
     q.push(s);
-    s->setVisited(true);
+    s -> setVisited(true);
     while (!q.empty()) {
         auto v = q.front();
         q.pop();
         res.push_back(v -> getId());
-        for (auto & e : v -> getAdj()) {
+        for (auto e : v -> getAdj()) {
             auto w = e -> getDest();
-            if ( ! w -> isVisited()) {
+            if (!w -> isVisited()) {
                 q.push(w);
                 w -> setVisited(true);
             }

@@ -35,14 +35,9 @@ public:
     void edmondsKarp(int source, int target);
 protected:
     // TODO: Add auxiliary methods if needed
-    void dfsKruskalPath(Vertex *v);
-
     static void testAndVisit(std::queue<Vertex *> &q, Edge *e, Vertex *w, double residual);
-
     bool findAugmentingPath(Vertex *s, Vertex *t);
-
     static double findMinResidualAlongPath(Vertex *s, Vertex *t);
-
     static void augmentFlowAlongPath(Vertex *s, Vertex *t, double f);
 };
 

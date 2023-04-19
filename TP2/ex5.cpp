@@ -1,10 +1,15 @@
 #include "exercises.h"
 
-#include <cmath>
-
-Result nearestPointsBF(std::vector<Point> &vp) {
+Result nearestPointsBF(vector<Point> &vp) {
     Result res;
-    // TODO
+    for (unsigned i = 0; i < vp.size(); i++) {
+        Point p = vp[i];
+        for (unsigned j = i + 1; j < vp.size(); j++) {
+            double dist = p.distance(vp[j]);
+            if (dist < res.dmin)
+                res = Result(dist, p, vp[j]);
+        }
+    }
     return res;
 }
 

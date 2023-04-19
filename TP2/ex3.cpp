@@ -2,11 +2,28 @@
 
 #include "exercises.h"
 
-int maxSubsequenceBF(int A[], unsigned int n, unsigned int &i, unsigned int &j) {
-    // TODO
-    return 0;
+int maxSubsequenceBF(const int A[], unsigned int n, unsigned int &i, unsigned int &j) {
+    bool firstSum = true;
+    int maxSum;
+    for (unsigned int a = 0; a < n; a++) {
+        int sum = 0;
+        for (unsigned int b = a; b < n; b++) {
+            sum += A[b];
+            if (firstSum) {
+                firstSum = false;
+                maxSum = sum;
+                i = a;
+                j = b;
+            }
+            else if (sum > maxSum) {
+                maxSum = sum;
+                i = a;
+                j = b;
+            }
+        }
+    }
+    return maxSum;
 }
-
 
 /// TESTS ///
 #include <gtest/gtest.h>

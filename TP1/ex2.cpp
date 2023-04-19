@@ -1,7 +1,6 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
-
 #include "TestAux.h"
 
 std::vector<int> IntroGraph::dfs(const int & source) const {
@@ -20,7 +19,7 @@ std::vector<int> IntroGraph::dfs(const int & source) const {
 void IntroGraph::dfsVisit(Vertex *v, std::vector<int> & res) const {
     v -> setVisited(true);
     res.push_back(v -> getId());
-    for (auto & e : v -> getAdj()) {
+    for (auto e : v -> getAdj()) {
         auto w = e -> getDest();
         if (!w -> isVisited()) {
             dfsVisit(w, res);

@@ -3,7 +3,16 @@
 #include "exercises.h"
 
 bool sum3(unsigned int T, unsigned int nums[3]) {
-    // TODO
+    for (unsigned int i = 1; i < T; i++) {
+        for (unsigned int j = 1; j < i; j++) {
+            if (int(T - i - j) > 0){
+                nums[0] = i;
+                nums[1] = j;
+                nums[2] = T - i - j;
+                return true;
+            }
+        }
+    }
     return false;
 }
 

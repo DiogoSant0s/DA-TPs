@@ -2,8 +2,40 @@
 
 #include "exercises.h"
 
-bool subsetSumBF(unsigned int A[], unsigned int n, unsigned int T, unsigned int subset[], unsigned int &subsetSize) {
-    // TODO
+bool subsetSumBF(const unsigned int A[], unsigned int n, unsigned int T, unsigned int subset[], unsigned int &subsetSize) {
+    bool curCandidate[20];
+    for (unsigned int i = 0; i < n; i++) {
+        curCandidate[i] = false;
+    }
+    while (true) {
+        unsigned int sum = 0;
+        for (unsigned int k = 0; k < n; k++) {
+            sum += A[k] * (unsigned int) curCandidate[k];
+        }
+        if (sum == T) {
+            subsetSize = 0;
+            for (unsigned int k = 0; k < n; k++) {
+                if (curCandidate[k]) {
+                    subset[subsetSize++] = A[k];
+                }
+            }
+            return true;
+        }
+        unsigned int curIndex = 0;
+        while (curCandidate[curIndex]) {
+            curIndex++;
+            if (curIndex == n) {
+                break;
+            }
+        }
+        if (curIndex == n) {
+            break;
+        }
+        for (unsigned int i = 0; i < curIndex; i++) {
+            curCandidate[i] = false;
+        }
+        curCandidate[curIndex] = true;
+    }
     return false;
 }
 
