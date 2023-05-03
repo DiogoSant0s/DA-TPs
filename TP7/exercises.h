@@ -4,6 +4,9 @@
 #define DA_TP7_CLASSES_EXERCISES_H
 
 #include <vector>
+#include <iostream>
+
+using namespace std;
 
 // Ex 1
 #define MAZE_WALL 0
@@ -12,12 +15,12 @@
 
 class Labyrinth {
 public:
-    Labyrinth(int values[10][10]);
+    explicit Labyrinth(int values[10][10]);
     void print() const;
     bool findGoal(int x, int y);
 private:
-    int labyrinth[10][10];
-    bool visited[10][10];
+    int labyrinth[10][10]{};
+    bool visited[10][10]{};
     // TODO: Add auxiliary methods if needed
 };
 
@@ -36,7 +39,7 @@ public:
     bool operator==(const Activity &a2) const;
     bool overlaps(const Activity &a2) const;
 };
-std::vector<Activity> activitySelectionBT(std::vector<Activity> A);
+vector<Activity> activitySelectionBT(const vector<Activity>& A);
 
 // Ex 5
 unsigned int knapsackBT(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int maxWeight, bool usedItems[]);
@@ -45,7 +48,7 @@ unsigned int knapsackBT(unsigned int values[], unsigned int weights[], unsigned 
 unsigned int tspBT(const unsigned int **dists, unsigned int n, unsigned int path[]);
 
 // Ex 7
-#define IllegalArgumentException -1
+#define IllegalArgumentException (-1)
 
 class Sudoku
 {
@@ -61,7 +64,7 @@ public:
      *
      * @param nums Matrix with the initial cell values (0 for empty cell)
      */
-    Sudoku(int nums[9][9]);
+    explicit Sudoku(int nums[9][9]);
     /**
      * Checks if the puzzle has been completely solved.
      */
@@ -78,7 +81,7 @@ public:
      * Returns:
      *   0 if the puzzle has no solution,
      *   1 if the puzzle has a unique solution,
-     *   >1 if the puzzle has two or more solutions (for efficiency reasnos, it does not count all of the solutions and stops on the second one)
+     *   >1 if the puzzle has two or more solutions (for efficiency reasons, it does not count all of the solutions and stops on the second one)
      */
     int countSolutions();
     /**
@@ -98,14 +101,14 @@ private:
      * numbers[i][j] - number that occupies line i, column j (from 0 to 8)
      * 0 means the cell is empty.
      */
-    int numbers[9][9];
+    int numbers[9][9]{};
     /**
      * Information derivable from numbers. Used to accelerate the computations.
      */
-    int countFilled;
-    bool columnHasNumber[9][10];
-    bool lineHasNumber[9][10];
-    bool block3x3HasNumber[3][3][10];
+    int countFilled{};
+    bool columnHasNumber[9][10]{};
+    bool lineHasNumber[9][10]{};
+    bool block3x3HasNumber[3][3][10]{};
 
     void initialize();
     /**

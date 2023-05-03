@@ -49,10 +49,11 @@ int** Sudoku::getNumbers() {
 #include <iostream>
 
 void Sudoku::print() const {
-    for (int i = 0; i < 9; i++) {
-        for (int a = 0; a < 9; a++)
-            std::cout << this->numbers[i][a] << " ";
-        std::cout << std::endl;
+    for (const auto & number : this->numbers) {
+        for (int a : number) {
+            cout << a << " ";
+        }
+        cout << std::endl;
     }
 }
 
@@ -73,15 +74,13 @@ void Sudoku::initialize() {
 }
 
 bool Sudoku::accepts(int i, int j, int n) {
-    return !lineHasNumber[i][n]
-           && !columnHasNumber[j][n]
-           && !block3x3HasNumber[i / 3][j / 3][n];
+    return !lineHasNumber[i][n] && !columnHasNumber[j][n] && !block3x3HasNumber[i / 3][j / 3][n];
 }
 
 void Sudoku::place(int i, int j, int n) {
-    if (numbers[i][j] != 0)
+    if (numbers[i][j] != 0) {
         return;
-
+    }
     numbers[i][j] = n;
     lineHasNumber[i][n] = true;
     columnHasNumber[j][n] = true;
@@ -91,13 +90,11 @@ void Sudoku::place(int i, int j, int n) {
 
 int Sudoku::clear(int i, int j) {
     int n = numbers[i][j];
-
     numbers[i][j] = 0;
     lineHasNumber[i][n] = false;
     columnHasNumber[j][n] = false;
     block3x3HasNumber[i / 3][j / 3][n] = false;
     countFilled--;
-
     return n;
 }
 
@@ -136,10 +133,11 @@ TEST(TP7_Ex7, testSudokuAlreadySolved) {
     int out[9][9];
     int** res = s.getNumbers();
 
-    for (int i = 0; i < 9; i++)
-        for (int a = 0; a < 9; a++)
+    for (int i = 0; i < 9; i++) {
+        for (int a = 0; a < 9; a++) {
             out[i][a] = res[i][a];
-
+        }
+    }
     compareSudokus(in, out);
 }
 
@@ -169,14 +167,15 @@ TEST(TP7_Ex7, testSudokuNoneBackStepsRequired) {
     Sudoku s(in);
     EXPECT_EQ(s.solve(), true);
 
-    int sout[9][9];
+    int sOut[9][9];
     int** res = s.getNumbers();
 
-    for (int i = 0; i < 9; i++)
-        for (int a = 0; a < 9; a++)
-            sout[i][a] = res[i][a];
-
-    compareSudokus(out, sout);
+    for (int i = 0; i < 9; i++) {
+        for (int a = 0; a < 9; a++) {
+            sOut[i][a] = res[i][a];
+        }
+    }
+    compareSudokus(out, sOut);
 }
 
 TEST(TP7_Ex7, testSudokuSomeBackStepsRequired) {
@@ -205,14 +204,15 @@ TEST(TP7_Ex7, testSudokuSomeBackStepsRequired) {
     Sudoku s(in);
     EXPECT_EQ(s.solve(), true);
 
-    int sout[9][9];
+    int sOut[9][9];
     int** res = s.getNumbers();
 
-    for (int i = 0; i < 9; i++)
-        for (int a = 0; a < 9; a++)
-            sout[i][a] = res[i][a];
-
-    compareSudokus(out, sout);
+    for (int i = 0; i < 9; i++) {
+        for (int a = 0; a < 9; a++) {
+            sOut[i][a] = res[i][a];
+        }
+    }
+    compareSudokus(out, sOut);
 }
 
 TEST(TP7_Ex7, testSudokuManyBackStepsRequired) {
@@ -241,14 +241,15 @@ TEST(TP7_Ex7, testSudokuManyBackStepsRequired) {
     Sudoku s(in);
     EXPECT_EQ(s.solve(), true);
 
-    int sout[9][9];
+    int sOut[9][9];
     int **res = s.getNumbers();
 
-    for (int i = 0; i < 9; i++)
-        for (int a = 0; a < 9; a++)
-            sout[i][a] = res[i][a];
-
-    compareSudokus(out, sout);
+    for (int i = 0; i < 9; i++) {
+        for (int a = 0; a < 9; a++) {
+            sOut[i][a] = res[i][a];
+        }
+    }
+    compareSudokus(out, sOut);
 }
 
 TEST(TP7_Ex7, testSudokuWithMinimalClues) {
@@ -277,14 +278,15 @@ TEST(TP7_Ex7, testSudokuWithMinimalClues) {
     Sudoku s(in);
     EXPECT_EQ(s.solve(), true);
 
-    int sout[9][9];
+    int sOut[9][9];
     int** res = s.getNumbers();
 
-    for (int i = 0; i < 9; i++)
-        for (int a = 0; a < 9; a++)
-            sout[i][a] = res[i][a];
-
-    compareSudokus(out, sout);
+    for (int i = 0; i < 9; i++) {
+        for (int a = 0; a < 9; a++) {
+            sOut[i][a] = res[i][a];
+        }
+    }
+    compareSudokus(out, sOut);
 }
 
 TEST(TP7_Ex7, testSudokuWithMultipleSolutions) {
@@ -302,8 +304,8 @@ TEST(TP7_Ex7, testSudokuWithMultipleSolutions) {
     Sudoku s(in);
     EXPECT_EQ(s.solve() && s.isComplete(), true);
     int** out = s.getNumbers();
-    for (int i=0; i<9; i++)
-        for (int j=0; j<9; j++)
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++)
             if (in[i][j] != 0)
                 EXPECT_EQ(in[i][j], out[i][j]);
 }
@@ -328,7 +330,7 @@ TEST(TP7_Ex7, testSudokuEmpty) {
 TEST(TP7_Ex7, testSudokuImpossible) {
     int in[9][9] =
             {{7, 0, 0, 1, 0, 8, 0, 0, 0},
-             {4/*0*/, 9, 0, 0, 0, 0, 0, 3, 2},
+             {4, 9, 0, 0, 0, 0, 0, 3, 2},
              {0, 0, 0, 0, 0, 5, 0, 0, 0},
              {0, 0, 0, 0, 0, 0, 1, 0, 0},
              {9, 6, 0, 0, 2, 0, 0, 0, 0},
@@ -343,9 +345,10 @@ TEST(TP7_Ex7, testSudokuImpossible) {
     int out[9][9];
     int** res = s.getNumbers();
 
-    for (int i = 0; i < 9; i++)
-        for (int a = 0; a < 9; a++)
+    for (int i = 0; i < 9; i++) {
+        for (int a = 0; a < 9; a++) {
             out[i][a] = res[i][a];
-
+        }
+    }
     compareSudokus(in, out);
 }
