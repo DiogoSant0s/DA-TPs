@@ -3,23 +3,47 @@
 #include "exercises.h"
 
 unsigned long s_recursive(unsigned int n, unsigned int k) {
-    // TODO
-    return 0;
+    if (k == 1 || n == k)
+        return 1;
+    else
+        return s_recursive(n - 1,k - 1) + k * s_recursive(n - 1, k);
 }
 
 unsigned long b_recursive(unsigned int n) {
-    // TODO
-    return 0;
+    unsigned long sum = 0;
+    for (unsigned int k = 1; k <= n; k++) {
+        sum += s_recursive(n,k);
+    }
+    return sum;
 }
 
 unsigned long s_dynamic(unsigned int n, unsigned int k) {
-    // TODO
-    return 0;
+    unsigned int len = n - k + 1;
+    int strip[10000];
+    for (int i = 0; i < len; i++) {
+        strip[i] = 1;
+    }
+    for (int i = 2; i <= k; i++) {
+        for (int j = 1; j < len; j++) {
+            strip[j] += i * strip[j - 1];
+        }
+    }
+    return strip[len-1];
 }
 
 unsigned long b_dynamic(unsigned int n) {
-    // TODO
-    return 0;
+    int line[1000];
+    for (unsigned int i = 1; i <= n; i++) {
+        line[i - 1] = 1;
+        for (unsigned int k = i - 1; k > 1; k--) {
+            line[k - 1] = (int) (line[k - 2] + k * line[k - 1]);
+        }
+    }
+    unsigned long sum = 0;
+    for (unsigned int k = 0; k < n; k++) {
+        sum += line[k];
+    }
+    return sum;
 }
 
 /// TESTS ///

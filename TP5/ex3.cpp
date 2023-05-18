@@ -1,11 +1,68 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
-#include <iostream>
 
-bool changeMakingDP(unsigned int C[], unsigned int Stock[], unsigned int n, unsigned int T, unsigned int usedCoins[]) {
-    // TODO
-    return false;
+bool changeMakingDP(const unsigned int C[], const unsigned int Stock[], unsigned int n, unsigned int T, unsigned int usedCoins[]) {
+    const unsigned int INF_N_COINS = T + 1;
+    unsigned int minCoins[10][11][1001];
+    unsigned int lastCoin[10][11][1001];
+    for (unsigned int i = 0; i < n; i++) {
+        for (unsigned int s = 0; s <= Stock[i]; s++) {
+            minCoins[i][s][0] = 0;
+            for (unsigned int k = 1; k <= T; k++) {
+                minCoins[i][s][k] = INF_N_COINS;
+            }
+        }
+    }
+    for (unsigned int s = 1; s <= Stock[0]; s++) {
+        for (unsigned int k = C[0]; k <= T; k++) {
+            if (k % C[0] == 0 && k / C[0] <= s) {
+                minCoins[0][s][k] = k / C[0];
+                lastCoin[0][s][k] = 0;
+            }
+        }
+    }
+    for (unsigned int i = 1; i < n; i++) {
+        for (unsigned int k = 1; k <= T; k++) {
+            minCoins[i][0][k] = minCoins[i-1][Stock[i-1]][k];
+            lastCoin[i][0][k] = lastCoin[i-1][Stock[i-1]][k];
+        }
+        for (unsigned int s = 1; s <= Stock[i]; s++) {
+            for (unsigned int k = 1; k <= T; k++) {
+                if (k >= C[i]) {
+                    if (minCoins[i][s-1][k - C[i]] < minCoins[i-1][Stock[i-1]][k]) {
+                        minCoins[i][s][k] = 1 + minCoins[i][s-1][k - C[i]];
+                        lastCoin[i][s][k] = i;
+                    }
+                    else {
+                        minCoins[i][s][k] = minCoins[i-1][Stock[i-1]][k];
+                        lastCoin[i][s][k] = lastCoin[i-1][Stock[i-1]][k];
+                    }
+                }
+                else {
+                    minCoins[i][s][k] = minCoins[i-1][Stock[i-1]][k];
+                    lastCoin[i][s][k] = lastCoin[i-1][Stock[i-1]][k];
+                }
+            }
+        }
+    }
+    if (minCoins[n-1][Stock[n-1]][T] == INF_N_COINS) {
+        return false;
+    }
+    for (unsigned int i = 0; i < n; i++) {
+        usedCoins[i] = 0;
+    }
+    int remainingT = (int) T;
+    int curI = (int) n - 1;
+    int curStock = (int) Stock[curI];
+    while (remainingT > 0) {
+        int nextI = (int) lastCoin[curI][curStock][remainingT];
+        usedCoins[nextI]++;
+        remainingT -= (int) C[nextI];
+        curI = nextI;
+        curStock = (int) Stock[curI] - (int) usedCoins[curI];
+    }
+    return true;
 }
 
 /// TESTS ///

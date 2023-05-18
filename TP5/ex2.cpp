@@ -2,9 +2,34 @@
 
 #include "exercises.h"
 
-bool changeMakingUnlimitedDP(unsigned int C[], unsigned int n, unsigned int T, unsigned int usedCoins[]) {
-
-    return false;
+bool changeMakingUnlimitedDP(const unsigned int C[], unsigned int n, unsigned int T, unsigned int usedCoins[]) {
+    const unsigned int INF_N_COINS = T + 1;
+    unsigned int minCoins[1001];
+    unsigned int lastCoin[1001];
+    minCoins[0] = 0;
+    for (unsigned int k = 1; k <= T; k++) {
+        minCoins[k] = INF_N_COINS;
+    }
+    for (unsigned int i = 0; i < n; i++) {
+        for (unsigned int k = C[i]; k <= T; k++) {
+            if (minCoins[k - C[i]] < minCoins[k]) {
+                minCoins[k] = 1 + minCoins[k - C[i]];
+                lastCoin[k] = i;
+            }
+        }
+    }
+    if (minCoins[T] == INF_N_COINS) {
+        return false;
+    }
+    for (unsigned int i = 0; i < n; i++) {
+        usedCoins[i] = 0;
+    }
+    int remainingT = (int) T;
+    while (remainingT > 0) {
+        usedCoins[lastCoin[remainingT]]++;
+        remainingT -= (int) C[lastCoin[remainingT]];
+    }
+    return true;
 }
 
 /// TESTS ///

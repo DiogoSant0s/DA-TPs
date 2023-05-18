@@ -1,11 +1,25 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
-#include <sstream>
 
-string calcSum(int sequence[], unsigned long n) {
-    // TODO
-    return "";
+string calcSum(const int sequence[], unsigned long n) {
+    long sum[10000];
+    unsigned long index[10000];
+    for (unsigned long i = 0; i < n; i++) {
+        long val = 0;
+        for (unsigned long j = i; j < n; j++) {
+            val += sequence[j];
+            if (i == 0 || val < sum[j - i]) {
+                sum[j - i] = val;
+                index[j - i] = i;
+            }
+        }
+    }
+    ostringstream oss;
+    for (unsigned long i = 0; i < n; i++) {
+        oss << sum[i] << "," << index[i] << ";";
+    }
+    return oss.str();
 }
 
 #include <iostream>
@@ -24,7 +38,7 @@ void testPerformanceCalcSum() {
         auto start = chrono::high_resolution_clock::now();
         for (unsigned int k = 0; k < N_ITERATIONS; k++) {
             for (unsigned long i = 0; i < size; i++) {
-                seq[i]= (int) rand() % (10 * size) + 1;
+                seq[i]= (int) (rand() % (10 * size) + 1);
             }
             string res = calcSum(seq, size);
         }

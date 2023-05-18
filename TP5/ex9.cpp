@@ -2,18 +2,49 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 
 int editDistance(string pattern, string text) {
-
-    return 0;
+    int n = (int) text.length();
+    std::vector<int> d(n + 1);
+    int old, neW;
+    for (int j = 0; j <= n; j++)
+        d[j] = j;
+    int m = (int) pattern.length();
+    for (int i = 1; i <= m; i++) {
+        old = d[0];
+        d[0] = i;
+        for (int j = 1; j <= n; j++) {
+            if (pattern[i-1] == text[j - 1])
+                neW = old;
+            else
+                neW = 1 + min(min(old, d[j]), d[j - 1]);
+            old = d[j];
+            d[j] = neW;
+        }
+    }
+    return d[n];
 }
 
-float numApproximateStringMatching(string filename, string toSearch) {
-    int wordCounter = 0;
-    int res[1000] = {0};
-
-    return 0.0;
+float numApproximateStringMatching(const string& filename, const string& toSearch) {
+    ifstream is(filename.c_str());
+    if (!is) {
+        cout << "Error while opening the file." << endl;
+        return 0;
+    }
+    string line1, word1;
+    int num = 0, n = 0;
+    while (!is.eof()) {
+        getline(is, line1);
+        stringstream s1(line1);
+        while (!s1.eof()) {
+            s1 >> word1;
+            num += editDistance(toSearch, word1);
+            n++;
+        }
+    }
+    is.close();
+    float res = (float) num / (float) n;
+    return res;
 }
 
 /// TESTS ///

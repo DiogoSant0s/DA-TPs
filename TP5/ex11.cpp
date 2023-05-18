@@ -4,7 +4,26 @@
 #include "TestAux.h"
 
 void DPGraph::bellmanFord(const int &origin) {
-    // TODO
+    for (auto v : vertexSet) {
+        v->setDist(INF);
+        v->setPath(nullptr);
+    }
+    auto s = findVertex(origin);
+    s->setDist(0);
+    for (unsigned i = 1; i < vertexSet.size(); i++) {
+        for (auto v: vertexSet) {
+            for (auto e: v->getAdj()) {
+                relax(e);
+            }
+        }
+    }
+    for (auto v: vertexSet) {
+        for (auto e: v->getAdj()) {
+            if (relax(e)) {
+                cout << "Negative cycle!" << endl;
+            }
+        }
+    }
 }
 
 /// TESTS ///

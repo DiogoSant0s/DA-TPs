@@ -2,19 +2,118 @@
 
 #include "exercises.h"
 
-int maxSubsequenceDP(int A[], unsigned int n, unsigned int &i, unsigned int &j) {
-    // TODO
-    return 0;
+int maxSubsequenceDP(const int A[], unsigned int n, unsigned int &i, unsigned int &j) {
+    if (n == 0)
+        return 0;
+    int bestSum = A[0];
+    int curSum = A[0];
+    i = 0;
+    unsigned int curI = 0;
+    j = 0;
+    for (unsigned int k = 1; k < n; k++) {
+        if (curSum >= 0) {
+            curSum += A[k];
+        }
+        else {
+            curI = k;
+            curSum = A[k];
+        }
+
+        if (curSum > bestSum) {
+            bestSum = curSum;
+            i = curI;
+            j = k;
+        }
+    }
+    return bestSum;
 }
 
-int maxSubsequenceBF(int A[], unsigned int n, unsigned int &i, unsigned int &j) {
-    // TODO: Copy your solution from TP2
-    return 0;
+int maxSubsequenceBF(const int A[], unsigned int n, unsigned int &i, unsigned int &j) {
+    if (n == 0)
+        return 0;
+    bool firstSum = true;
+    int maxSum;
+    for (unsigned int a = 0; a < n; a++) {
+        for (unsigned int b = a + 1; b < n; b++) {
+            int sum = 0;
+            for (unsigned int c = a; c <= b; c++) {
+                sum += A[c];
+            }
+            if (firstSum) {
+                firstSum = false;
+                maxSum = sum;
+                i = a;
+                j = b;
+            }
+            else if (sum > maxSum) {
+                maxSum = sum;
+                i = a;
+                j = b;
+            }
+        }
+    }
+    return maxSum;
+}
+
+int maxSubsequenceDCRec(int A[], int start, int finish, int &i, int &j) {
+    if (start == finish) {
+        i = start;
+        j = finish;
+        return A[start];
+    }
+    int start2 = (int)round((start + finish) / 2.0);
+    int finish1 = start2 - 1;
+    int i1, j1;
+    int i2, j2;
+
+    int bestSum1 = maxSubsequenceDCRec(A,start,finish1,i1,j1);
+    int bestSum2 = maxSubsequenceDCRec(A,start2,finish,i2,j2);
+
+    int curSum = A[finish1];
+    int bestCrossingSum1 = A[finish1];
+    int bestCrossingI = finish1;
+
+    for (int k = finish1 - 1; k >= start; k--) {
+        curSum += A[k];
+        if (curSum > bestCrossingSum1) {
+            bestCrossingSum1 = curSum;
+            bestCrossingI = k;
+        }
+    }
+    curSum = A[start2];
+    int bestCrossingSum2 = A[start2];
+    int bestCrossingJ = start2;
+
+    for (int k = start2 + 1; k <= finish; k++) {
+        curSum += A[k];
+        if (curSum > bestCrossingSum2) {
+            bestCrossingSum2 = curSum;
+            bestCrossingJ = k;
+        }
+    }
+    int bestCrossingSum = bestCrossingSum1 + bestCrossingSum2;
+    if (bestCrossingSum > bestSum1 && bestCrossingSum > bestSum2) {
+        i = bestCrossingI;
+        j = bestCrossingJ;
+        return bestCrossingSum;
+    }
+    else if (bestSum1 > bestSum2) {
+        i = i1;
+        j = j1;
+        return bestSum1;
+    }
+    else {
+        i = i2;
+        j = j2;
+        return bestSum2;
+    }
 }
 
 int maxSubsequenceDC(int A[], unsigned int n, int &i, int &j) {
-    // TODO: Copy your solution from TP4
-    return 0;
+    if (n == 0)
+        return 0;
+    else
+        return maxSubsequenceDCRec(A,0,(int) n - 1,i,j);
 }
 
 /// TESTS ///
@@ -68,7 +167,7 @@ void testPerformanceMaxSubsequence() {
         auto elapsedDC = chrono::duration<double>::zero();
         for (unsigned long q = 0; q < N_ITERATIONS; q++) {
             for (unsigned long i = 0; i < size; i++) {
-                seq[i] = (int) rand() % (10 * size) - (5 * size);
+                seq[i] = (int) (rand() % (10 * size) - (5 * size));
             }
 
             unsigned int i, j;

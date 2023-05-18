@@ -2,9 +2,38 @@
 
 #include "exercises.h"
 
+string dpMatrix[25][3][3];
+
+char otherStack(char src, char dest) {
+    if (src > dest)
+        return otherStack(dest, src);
+    else {
+        if (src == 'A') {
+            if(dest == 'B') return 'C';
+            else return 'B';
+        }
+        else {
+            return 'A';
+        }
+    }
+}
+
 string hanoiDP(unsigned int n, char src, char dest) {
-    // TODO
-    return "";
+    unsigned int srcInt = src - 'A';
+    unsigned int destInt = dest - 'A';
+    string &dpCell = dpMatrix[n-1][srcInt][destInt];
+    if (!dpCell.empty())
+        return dpCell;
+    else {
+        if (n > 1) {
+            char aux = otherStack(src, dest);
+            auto moves1 = hanoiDP(n - 1, src, aux);
+            auto moves2 = hanoiDP(1, src, dest);
+            auto moves3 = hanoiDP(n - 1, aux, dest);
+            return dpCell = moves1 + "," + moves2 +  "," + moves3;
+        }
+        else return dpCell = string(1,src) + "->" + string(1,dest);
+    }
 }
 
 /// TESTS ///

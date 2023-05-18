@@ -4,17 +4,55 @@
 #include "TestAux.h"
 
 bool DPGraph::relax(Edge *edge) {
-    // TODO
-    return false;
+    if (edge->getOrig()->getDist() + edge->getWeight() < edge->getDest()->getDist()) {
+        edge->getDest()->setDist(edge->getOrig()->getDist() + edge->getWeight());
+        edge->getDest()->setPath(edge);
+        return true;
+    }
+    else
+        return false;
 }
 
 void DPGraph::dijkstra(const int &origin) {
-    // TODO
+    for (auto v : vertexSet) {
+        v->setDist(INF);
+        v->setPath(nullptr);
+    }
+    auto s = findVertex(origin);
+    s->setDist(0);
+    MutablePriorityQueue<Vertex> q;
+    q.insert(s);
+    while(!q.empty() ) {
+        auto v = q.extractMin();
+        for (auto e : v->getAdj()) {
+            auto oldDist = e->getDest()->getDist();
+            if (relax(e)) {
+                if (oldDist == INF) {
+                    q.insert(e->getDest());
+                }
+                else {
+                    q.decreaseKey(e->getDest());
+                }
+            }
+        }
+    }
 }
 
 vector<int> DPGraph::getPath(const int &origin, const int &dest) const{
     vector<int> res;
-    // TODO
+    auto v = findVertex(dest);
+    if (v == nullptr || v->getDist() == INF) {
+        return res;
+    }
+    res.push_back(v->getId());
+    while (v->getPath() != nullptr) {
+        v = v->getPath()->getOrig();
+        res.push_back(v->getId());
+    }
+    reverse(res.begin(), res.end());
+    if (res.empty() || res[0] != origin) {
+        cout << "Origin not found!!" << endl;
+    }
     return res;
 }
 
