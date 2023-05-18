@@ -2,9 +2,33 @@
 
 #include "exercises.h"
 
+void knapsackBTRec(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int curIndex, unsigned int maxWeight, unsigned int curValue, bool curItems[], unsigned int &maxValue, bool usedItems[]) {
+    if (curIndex == n) {
+        if (curValue > maxValue) {
+            maxValue = curValue;
+            for (unsigned int i = 0; i < n; i++) {
+                usedItems[i] = curItems[i];
+            }
+        }
+    }
+    else {
+        if (maxWeight >= weights[curIndex]) {
+            curItems[curIndex] = true;
+            knapsackBTRec(values, weights, n, curIndex + 1, maxWeight - weights[curIndex], curValue + values[curIndex], curItems, maxValue, usedItems);
+            curItems[curIndex] = false; // Don't forget to undo the last choice point!
+        }
+        knapsackBTRec(values, weights, n, curIndex + 1, maxWeight, curValue, curItems, maxValue, usedItems);
+    }
+}
+
 unsigned int knapsackBT(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int maxWeight, bool usedItems[]) {
-    // TODO
-    return 0;
+    unsigned int maxValue = 0;
+    bool curItems[10000];
+    for (unsigned int i = 0; i < n; i++) {
+        curItems[i] = false;
+    }
+    knapsackBTRec(values, weights, n, 0, maxWeight, 0, curItems, maxValue, usedItems);
+    return maxValue;
 }
 
 /// TESTS ///

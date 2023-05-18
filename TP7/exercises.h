@@ -4,13 +4,11 @@
 #define DA_TP7_CLASSES_EXERCISES_H
 
 #include <vector>
-#include <iostream>
 
 using namespace std;
 
 // Ex 1
 #define MAZE_WALL 0
-#define MAZE_PATH 1
 #define MAZE_EXIT 2
 
 class Labyrinth {
@@ -21,7 +19,8 @@ public:
 private:
     int labyrinth[10][10]{};
     bool visited[10][10]{};
-    // TODO: Add auxiliary methods if needed
+    void initializeVisited();
+    bool findGoalRec(int x, int y);
 };
 
 // Ex 2
@@ -39,7 +38,7 @@ public:
     bool operator==(const Activity &a2) const;
     bool overlaps(const Activity &a2) const;
 };
-vector<Activity> activitySelectionBT(const vector<Activity>& A);
+vector<Activity> activitySelectionBT(vector<Activity> A);
 
 // Ex 5
 unsigned int knapsackBT(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int maxWeight, bool usedItems[]);
@@ -50,8 +49,7 @@ unsigned int tspBT(const unsigned int **dists, unsigned int n, unsigned int path
 // Ex 7
 #define IllegalArgumentException (-1)
 
-class Sudoku
-{
+class Sudoku {
 public:
     /**
      * Creates an empty puzzle
@@ -112,6 +110,13 @@ private:
 
     void initialize();
     /**
+     * Searches the best cell to fill in - the cell with
+     * a minimum number of candidates.
+     * Returns true if found and false otherwise
+     * (Sudoku complete or impossible).
+     */
+    bool findBestCell(int &best_i, int &best_j);
+    /**
      * Checks if the cell at line i, column j accepts number n
      */
     bool accepts(int i, int j, int n);
@@ -130,6 +135,14 @@ private:
      * Clears the whole puzzle
      */
     void clear();
+    /**
+     * Fills random cells in the puzzle until it has a unique solution.
+     */
+    bool completeProblem();
+    /**
+     * Erases as many cells as possible while ensuring the puzzle still has a unique solution.
+     */
+    bool reduce();
 };
 
 #endif //DA_TP7_CLASSES_EXERCISES_H

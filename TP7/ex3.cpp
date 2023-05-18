@@ -2,9 +2,37 @@
 
 #include "exercises.h"
 
+bool changeMakingBTRec(unsigned int C[], unsigned int Stock[], unsigned int n, unsigned int curIndex, unsigned int T, unsigned int curNCoins, unsigned int curCoins[], unsigned int &minCoins, unsigned int bestCoins[]) {
+    if (curIndex == n) {
+        if (T == 0) {
+            if (curNCoins < minCoins) {
+                minCoins = curNCoins;
+                for (unsigned int i = 0; i < n; i++) {
+                    bestCoins[i] = curCoins[i];
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    bool foundSolWithCoin = false;
+    if (curCoins[curIndex] < Stock[curIndex] && T >= C[curIndex]) {
+        curCoins[curIndex]++;
+        foundSolWithCoin = changeMakingBTRec(C, Stock, n, curIndex, T - C[curIndex], curNCoins + 1, curCoins,minCoins, bestCoins);
+        curCoins[curIndex]--;
+    }
+    bool foundSolWithoutCoin = changeMakingBTRec(C, Stock, n, curIndex + 1, T, curNCoins, curCoins, minCoins, bestCoins);
+    return foundSolWithCoin || foundSolWithoutCoin;
+}
+
 bool changeMakingBT(unsigned int C[], unsigned int Stock[], unsigned int n, unsigned int T, unsigned int usedCoins[]) {
-    // TODO
-    return false;
+    unsigned int minCoins = 0;
+    unsigned int curCoins[10000];
+    for (unsigned int i = 0; i < n; i++) {
+        curCoins[i] = 0;
+        minCoins += Stock[i];
+    }
+    return changeMakingBTRec(C, Stock, n, 0, T, 0, curCoins, minCoins, usedCoins);
 }
 
 /// TESTS ///
