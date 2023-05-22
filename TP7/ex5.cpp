@@ -15,7 +15,7 @@ void knapsackBTRec(unsigned int values[], unsigned int weights[], unsigned int n
         if (maxWeight >= weights[curIndex]) {
             curItems[curIndex] = true;
             knapsackBTRec(values, weights, n, curIndex + 1, maxWeight - weights[curIndex], curValue + values[curIndex], curItems, maxValue, usedItems);
-            curItems[curIndex] = false; // Don't forget to undo the last choice point!
+            curItems[curIndex] = false;
         }
         knapsackBTRec(values, weights, n, curIndex + 1, maxWeight, curValue, curItems, maxValue, usedItems);
     }

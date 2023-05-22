@@ -19,7 +19,7 @@ void Labyrinth::print() const {
 
 bool Labyrinth::findGoal(int x, int y) {
     initializeVisited();
-    return findGoalRec(x,y);
+    return findGoalRec(x, y);
 }
 
 void Labyrinth::initializeVisited() {
@@ -37,8 +37,7 @@ bool Labyrinth::findGoalRec(int x, int y) {
         cout << ": Reached the goal!" << endl;
         return true;
     }
-    return findGoalRec(x - 1, y) || findGoalRec(x + 1, y) ||
-            findGoalRec(x, y - 1) || findGoalRec(x, y + 1);
+    return findGoalRec(x - 1, y) || findGoalRec(x + 1, y) || findGoalRec(x, y - 1) || findGoalRec(x, y + 1);
 }
 
 /// TESTS ///

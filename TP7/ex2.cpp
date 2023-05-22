@@ -8,7 +8,7 @@ bool subsetSumBTRec(unsigned int A[], unsigned int n, unsigned int curIndex, uns
     }
     if (T >= A[curIndex]) {
         subset[subsetSize++] = A[curIndex];
-        if(subsetSumBTRec(A, n, curIndex + 1, T - A[curIndex], subsetSize, subset)) {
+        if (subsetSumBTRec(A, n, curIndex + 1, T - A[curIndex], subsetSize, subset)) {
             return true;
         }
         subsetSize--;
@@ -54,15 +54,15 @@ TEST(TP7_Ex2, testSubsetSum) {
     unsigned int subsetSize;
     unsigned int T = 9;
 
-    EXPECT_EQ(subsetSumBT(A,6, T, subset,subsetSize), true);
+    EXPECT_EQ(subsetSumBT(A, 6, T, subset,subsetSize), true);
     EXPECT_EQ(sum(subset, subsetSize), T);
-    EXPECT_EQ(isSubset(subset, subsetSize, A,6), true);
+    EXPECT_EQ(isSubset(subset, subsetSize, A ,6), true);
 
     T = 20;
-    EXPECT_EQ(subsetSumBT(A,6, T, subset,subsetSize), true);
+    EXPECT_EQ(subsetSumBT(A, 6, T, subset,subsetSize), true);
     EXPECT_EQ(sum(subset, subsetSize), T);
-    EXPECT_EQ(isSubset(subset, subsetSize, A,6), true);
+    EXPECT_EQ(isSubset(subset, subsetSize, A, 6), true);
 
     T = 30;
-    EXPECT_EQ(subsetSumBT(A,6, T, subset,subsetSize), false);
+    EXPECT_EQ(subsetSumBT(A, 6, T, subset,subsetSize), false);
 }

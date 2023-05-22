@@ -43,9 +43,6 @@ vector<Activity> activitySelectionBT(vector<Activity> A) {
 
 /// TESTS ///
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
-
-#include <utility>
 
 bool noOverlaps(const vector<Activity> &acts) {
     for (unsigned int i = 0; i < acts.size(); i++) {
